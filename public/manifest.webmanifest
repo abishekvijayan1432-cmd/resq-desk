@@ -1,0 +1,21 @@
+{
+  "name": "ResQ Desk — Emergency Response",
+  "short_name": "ResQ Desk",
+  "description": "Report emergencies, dispatch the nearest response team and coordinate incidents offline.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050a14",
+  "theme_color": "#050a14",
+  "categories": ["utilities", "medical", "public safety"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Report an emergency", "short_name": "Report", "url": "/?page=report" },
+    { "name": "Control room", "short_name": "Control", "url": "/?page=control" }
+  ]
+}

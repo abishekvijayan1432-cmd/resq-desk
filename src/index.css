@@ -1,0 +1,234 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens — dark emergency-control-room palette
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-navy-950: #050a14;
+  --color-navy-900: #071021;
+  --color-navy-850: #0a1526;
+  --color-navy-800: #0e1b30;
+  --color-navy-700: #16263f;
+  --color-navy-600: #243858;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-h-screen bg-navy-950 font-sans text-slate-200 antialiased;
+    background-image:
+      radial-gradient(80rem 40rem at 12% -10%, rgba(56, 189, 248, 0.09), transparent 60%),
+      radial-gradient(60rem 30rem at 95% 0%, rgba(239, 68, 68, 0.08), transparent 55%),
+      linear-gradient(180deg, #050a14 0%, #060d1a 55%, #050a14 100%);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-white;
+  }
+
+  /* Visible, high-contrast keyboard focus everywhere. */
+  :focus-visible {
+    outline: 2px solid #7dd3fc;
+    outline-offset: 2px;
+    border-radius: 0.35rem;
+  }
+
+  ::selection {
+    background: rgba(56, 189, 248, 0.35);
+    color: #fff;
+  }
+
+  /* Firefox-friendly scrollbar for long queues. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #243858 transparent;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable component classes
+--------------------------------------------------------------------------- */
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-white/10 bg-navy-850/80 shadow-xl shadow-black/30 backdrop-blur-sm;
+  }
+
+  .field-label {
+    @apply block text-sm font-medium text-slate-200;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-white/15 bg-navy-900/80 px-3.5 py-2.5 text-sm text-slate-100 transition placeholder:text-slate-500 hover:border-white/25 focus:border-sky-400/70 focus:ring-2 focus:ring-sky-400/25 focus:outline-none disabled:opacity-60;
+  }
+
+  .field-input-invalid {
+    @apply border-red-500/70 hover:border-red-400/80 focus:border-red-400 focus:ring-red-400/25;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition select-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-950/50 transition select-none hover:bg-red-500 active:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-100 transition select-none hover:border-white/25 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-ghost {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-300 transition select-none hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-danger {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-200 transition select-none hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold whitespace-nowrap;
+  }
+
+  .nav-tab {
+    @apply inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white;
+  }
+
+  .nav-tab-active {
+    @apply bg-white/10 text-white ring-1 ring-white/20;
+  }
+
+  .stat-card {
+    @apply relative overflow-hidden rounded-2xl border border-white/10 bg-navy-850/80 p-4 shadow-xl shadow-black/30 backdrop-blur-sm sm:p-5;
+  }
+
+  .section-title {
+    @apply font-display text-base font-semibold text-white sm:text-lg;
+  }
+
+  .kbd {
+    @apply rounded border border-white/20 bg-white/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-300;
+  }
+
+  /* Keep bottom navigation from covering the last row of content. */
+  .mobile-safe-bottom {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Critical incident treatment: red left border + subtle pulsing glow.
+   Disabled when the user prefers reduced motion.
+--------------------------------------------------------------------------- */
+.critical-card {
+  border-left: 4px solid #ef4444;
+  animation: critical-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes critical-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(239, 68, 68, 0.18),
+      0 0 20px -6px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(239, 68, 68, 0.42),
+      0 0 30px 0 rgba(239, 68, 68, 0.42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .critical-card {
+    animation: none;
+    box-shadow:
+      0 0 0 1px rgba(239, 68, 68, 0.35),
+      0 0 18px -6px rgba(239, 68, 68, 0.35);
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Live-preview dot on the reporting form. */
+@keyframes live-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+.live-dot {
+  animation: live-dot 1.8s ease-in-out infinite;
+}
+
+/* Critical incident ring on the offline response map. */
+@keyframes map-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+.map-pin-pulse {
+  animation: map-pulse 2.2s ease-in-out infinite;
+}
+
+/* Modal entrance */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.modal-in {
+  animation: modal-in 0.18s ease-out;
+}
+
+/* Toast entrance */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.toast-in {
+  animation: toast-in 0.2s ease-out;
+}
